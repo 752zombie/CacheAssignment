@@ -2,28 +2,41 @@ package com.example.demo.services;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Cache {
-    private Map<Integer, String> map;
+    private Map<Object, Object> map;
 
     public Cache() {
         map = new HashMap<>();
     }
 
-    public String get(int key) {
+    public Object get(Object key) {
         return map.get(key);
     }
 
-    public void set(int key, String value) {
+    public void set(Object key, Object value) {
         map.put(key, value);
     }
 
-    public boolean has(int key) {
+    public boolean has(Object key) {
         return map.containsKey(key);
     }
 
-    public void delete(int key) {
+    public void delete(Object key) {
         map.remove(key);
+    }
+
+    public void setTTL(Object key, int seconds) {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                delete(key);
+            }
+        }, seconds * 1000L);
+
     }
 
 

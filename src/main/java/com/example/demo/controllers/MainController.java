@@ -23,8 +23,10 @@ public class MainController {
             User user = new User(id);
             String userString = user.getDataSlow();
             cache.set(id, userString);
+            // Set time to live for a short time for easier testing
+            cache.setTTL(id, 60);
         }
 
-        return cache.get(id);
+        return (String) cache.get(id);
     }
 }
